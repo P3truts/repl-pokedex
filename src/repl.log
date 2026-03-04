@@ -1,0 +1,7 @@
+
+> repl-pokedex@1.0.0 dev
+> npx tsc && node dist/main.js
+
+REPL-Pokedex > Your command was: charmander
+REPL-Pokedex > Your command was: pikachu
+REPL-Pokedex > 

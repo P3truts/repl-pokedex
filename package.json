@@ -1,0 +1,29 @@
+{
+  "name": "repl-pokedex",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "vitest --run",
+    "build": "npx tsc",
+    "start": "node dist/main.js",
+    "dev": "npx tsc && node dist/main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/P3truts/repl-pokedex.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/P3truts/repl-pokedex/issues"
+  },
+  "homepage": "https://github.com/P3truts/repl-pokedex#readme",
+  "devDependencies": {
+    "@types/node": "^25.3.3",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
+  },
+  "type": "module"
+}
