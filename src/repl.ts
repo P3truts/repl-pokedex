@@ -16,7 +16,11 @@ export async function startRepl(state: State): Promise<void> {
 		if (words[0] in state.cmds) {
 			for (const cmd in state.cmds) {
 				if (cmd === words[0]) {
-					state.cmds[cmd].callback(state);
+					if (words[1]) {
+						state.cmds[cmd].callback(state, words[1]);
+					} else {
+						state.cmds[cmd].callback(state);
+					}
 				}
 			}
 		} else {

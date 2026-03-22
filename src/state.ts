@@ -2,12 +2,13 @@ import { createInterface, type Interface } from "node:readline/promises";
 import { displayCommands } from "./cmd_help.js";
 import { commandExit } from "./cmd_exit.js";
 import { map, mapb } from "./cmd_map.js";
+import { explore } from "./cmd_explore.js";
 import { PokeAPI } from "./pokeapi.js";
 
 export type CLICommand = {
     name: string;
     description: string;
-    callback: (state: State) => Promise<void>;
+    callback: (state: State, ...args: string[]) => Promise<void>;
 };
 
 export type State = {
@@ -34,6 +35,11 @@ export function getCommands(): Record<string, CLICommand> {
             name: "mapb",
             description: "Diplays top level previous pokemon locations",
             callback: mapb,
+        },
+        explore: {
+            name: "explore",
+            description: "Explore location area for pokemons",
+            callback: explore,
         },
         exit: {
             name: "exit",

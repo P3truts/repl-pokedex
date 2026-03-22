@@ -34,6 +34,7 @@ export async function mapb(state: State): Promise<void> {
         console.log("You're on the first page!");
 
         state.rl.prompt();
+
         return;
     }
     back = true;

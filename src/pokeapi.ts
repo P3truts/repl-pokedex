@@ -1,37 +1,57 @@
+import { Cache } from "./pokecache.js";
 
 export class PokeAPI {
     private static readonly baseURL = "https://pokeapi.co/api/v2";
+    private static cache: Cache;
 
-    constructor() { }
+    constructor() {
+        let milisecs = 10000;
+        PokeAPI.cache = new Cache(milisecs);
+    }
 
     async fetchLocations(pageURL?: string): Promise<ShallowLocations> {
-        let resp;
-
-        if (pageURL && pageURL.includes(PokeAPI.baseURL)) {
-            resp = await fetch(pageURL);
-        } else {
-            resp = await fetch(PokeAPI.baseURL + "/" + pageURL);
+        if (pageURL) {
+            let cachedValue = PokeAPI.cache.get(pageURL) as ShallowLocations;
+            if (cachedValue) {
+                return cachedValue;
+            }
         }
+
+        let page;
+        if (pageURL && pageURL.includes(PokeAPI.baseURL)) {
+            page = pageURL;
+        } else {
+            page = PokeAPI.baseURL + "/" + pageURL;
+        }
+        const resp = await fetch(page);
 
         if (resp && !resp.ok) {
             throw new Error(`Response status for fetchLocations: ${resp.status}`);
-        } else {
-            const res: ShallowLocations = await resp.json();
-
-            return res;
         }
+
+        const res: ShallowLocations = await resp.json();
+
+        PokeAPI.cache.add(page, res);
+        return res;
     }
 
     async fetchLocation(locationName: string): Promise<Location> {
-        const resp = await fetch(PokeAPI.baseURL + "/" + locationName);
+        let cachedValue = PokeAPI.cache.get(locationName) as Location;
+        if (cachedValue) {
+            return cachedValue;
+        }
 
-        if (!resp.ok) {
+        let page = PokeAPI.baseURL + "/location-area/" + locationName;
+
+        const resp = await fetch(page);
+
+        if (resp && !resp.ok) {
             throw new Error(`Response status for fetchLocation: ${resp.status}`);
         }
 
         const res: Location = await resp.json();
-        console.log(res);
 
+        PokeAPI.cache.add(page, res);
         return res;
     }
 }
@@ -51,10 +71,6 @@ export interface Result {
 
 // Location models
 export type Location = {
-    root: LocationRoot
-};
-
-export interface LocationRoot {
     encounter_method_rates: EncounterMethodRate[]
     game_index: number
     id: number
