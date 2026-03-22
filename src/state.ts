@@ -3,7 +3,8 @@ import { displayCommands } from "./cmd_help.js";
 import { commandExit } from "./cmd_exit.js";
 import { map, mapb } from "./cmd_map.js";
 import { explore } from "./cmd_explore.js";
-import { PokeAPI } from "./pokeapi.js";
+import { catchCommand } from "./cmd_catch.js";
+import { PokeAPI, PokemonDetails } from "./pokeapi.js";
 
 export type CLICommand = {
     name: string;
@@ -16,7 +17,8 @@ export type State = {
     cmds: Record<string, CLICommand>;
     pokeapi: PokeAPI,
     nextLocationsURL?: string,
-    prevLocationsURL?: string
+    prevLocationsURL?: string,
+    pokedex: Record<string, PokemonDetails>
 };
 
 export function getCommands(): Record<string, CLICommand> {
@@ -41,6 +43,11 @@ export function getCommands(): Record<string, CLICommand> {
             description: "Explore location area for pokemons",
             callback: explore,
         },
+        catch: {
+            name: "catch",
+            description: "Catch pokemon in pokedex",
+            callback: catchCommand,
+        },
         exit: {
             name: "exit",
             description: "Exit the Pokedex",
@@ -60,12 +67,14 @@ export function initState(): State {
     const pokeAPI = new PokeAPI();
     const nextLocationsURL = "";
     const prevLocationsURL = "";
+    const pokedex = {};
 
     return {
         rl: rl,
         cmds: cmds,
         pokeapi: pokeAPI,
         nextLocationsURL: nextLocationsURL,
-        prevLocationsURL: prevLocationsURL
+        prevLocationsURL: prevLocationsURL,
+        pokedex: pokedex
     };
 }

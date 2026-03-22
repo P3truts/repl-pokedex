@@ -54,6 +54,26 @@ export class PokeAPI {
         PokeAPI.cache.add(page, res);
         return res;
     }
+
+    async fetchPokemon(pokemonName: string): Promise<PokemonDetails> {
+        let cachedValue = PokeAPI.cache.get(pokemonName) as PokemonDetails;
+        if (cachedValue) {
+            return cachedValue;
+        }
+
+        let pokemon = PokeAPI.baseURL + "/pokemon/" + pokemonName;
+
+        const resp = await fetch(pokemon);
+
+        if (resp && !resp.ok) {
+            throw new Error(`Response status for fetchPokemon: ${resp.status}`);
+        }
+
+        const res: PokemonDetails = await resp.json();
+
+        PokeAPI.cache.add(pokemon, res);
+        return res;
+    }
 }
 
 // Shallow Location Models
@@ -147,5 +167,11 @@ export interface Method {
 export interface Version2 {
     name: string
     url: string
+}
+
+//Pokemon model
+export type PokemonDetails = {
+    name: string
+    base_experience: number
 }
 
