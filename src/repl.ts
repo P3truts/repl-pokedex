@@ -5,7 +5,7 @@ export function cleanInput(input: string): string[] {
 	return input.toLowerCase().split(" ").filter(c => c !== "");
 }
 
-export function startRepl(state: State): void {
+export async function startRepl(state: State): Promise<void> {
 	state.rl.prompt();
 	state.rl.on("line", (input: string) => {
 		let words = cleanInput(input);
@@ -21,9 +21,11 @@ export function startRepl(state: State): void {
 			}
 		} else {
 			console.log("Unknown command");
+			state.rl.prompt();
 		}
 
-		state.rl.prompt();
 	});
+
+	state.rl.prompt();
 }
 
