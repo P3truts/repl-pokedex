@@ -5,7 +5,7 @@ export class PokeAPI {
     private static cache: Cache;
 
     constructor() {
-        let milisecs = 10000;
+        const milisecs = 10000;
         PokeAPI.cache = new Cache(milisecs);
     }
 
@@ -75,6 +75,8 @@ export class PokeAPI {
         return res;
     }
 }
+
+// Models generated with https://transform.tools/json-to-typescript
 
 // Shallow Location Models
 export type ShallowLocations = {
@@ -172,6 +174,31 @@ export interface Version2 {
 //Pokemon model
 export type PokemonDetails = {
     name: string
+    height: number
+    weight: number
     base_experience: number
+    stats: Stat3[]
+    types: Type[]
+}
+
+export interface Stat3 {
+    base_stat: number
+    effort: number
+    stat: Stat4
+}
+
+export interface Stat4 {
+    name: string
+    url: string
+}
+
+export interface Type {
+    slot: number
+    type: Type2
+}
+
+export interface Type2 {
+    name: string
+    url: string
 }
 
