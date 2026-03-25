@@ -11,7 +11,7 @@ export async function inspectCommand(state: State, pokName: string): Promise<voi
     }
 
     try {
-        const pokemon = await state.pokeapi.fetchPokemon(pokemonName);
+        const pokemon = state.pokedex[pokemonName];
 
         console.log(`Name: ${pokemon.name}\nHeight: ${pokemon.height}\nWeight: ${pokemon.weight}\nStats:`);
         for (const stat of pokemon.stats) {
